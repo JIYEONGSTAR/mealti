@@ -2,42 +2,42 @@
 import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import ThemeToggle from "./ui/ThemeToggle";
+import LargeText from "./ui/LargeText";
+import PersonIcon from "@mui/icons-material/Person";
 const NavBar = ({ onChangeColorMode, isDark }: any) => {
   const router = useRouter();
   return (
     <Nav>
-      <div>
+      <div
+        style={{
+          display: "flex",
+          width: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <LargeText text="MEALTI" />
+      </div>
+      <NavWrapper>
         <LinkWrapper active={router.pathname === "/" ? "active" : ""} href="/">
           Home
         </LinkWrapper>
         <LinkWrapper
-          active={router.pathname === "/account" ? "active" : ""}
-          href="/account"
+          active={router.pathname === "/meal" ? "active" : ""}
+          href="/meal"
         >
-          Account
-        </LinkWrapper>
-        <LinkWrapper
-          active={router.pathname === "/recipe" ? "active" : ""}
-          href="/recipe"
-        >
-          Recipe
-        </LinkWrapper>
-        <LinkWrapper
-          active={router.pathname === "/community" ? "active" : ""}
-          href="/community"
-        >
-          Community
+          Meal
         </LinkWrapper>
         <LinkWrapper
           active={router.pathname === "/mypage" ? "active" : ""}
           href="/mypage"
         >
-          MyPage
+          <PersonIcon />
         </LinkWrapper>
         <ThemeToggle onChangeColorMode={onChangeColorMode} isDark={isDark} />
-      </div>
+      </NavWrapper>
     </Nav>
   );
 };
@@ -47,22 +47,34 @@ export default NavBar;
 const Nav = styled.nav`
   display: flex;
   width: 100%;
-  gap: 10px;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  padding-top: 20px;
-  padding-bottom: 10px;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
     rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
-
-  > div {
-    display: flex;
-    gap: 10px;
-  }
+  background-color: ${(props) => props.theme.color.mainColor};
 `;
-
+const NavWrapper = styled.div`
+  bottom: 0;
+  position: fixed;
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  background-color: ${(props) => props.theme.color.backgroundColor};
+  padding: 10px;
+`;
 const LinkWrapper = styled(Link)<{ active: string }>`
   font-weight: 600;
   font-size: 18px;
-  color: ${(props) => props.active === "active" && "tomato"};
+  margin: 0 20px 0 20px;
+  color: ${(props) => props.theme.color.textColor};
+  ${(props) =>
+    props.active === "active" &&
+    css`
+      text-decoration: underline;
+      text-decoration-color: ${(props) => props.theme.color.subColor};
+      text-underline-offset: 8px;
+    `};
 `;

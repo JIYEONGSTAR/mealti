@@ -1,16 +1,27 @@
 import { atom } from "recoil"; // recoil 상태관리
 import { recoilPersist } from "recoil-persist";
 const { persistAtom } = recoilPersist();
-export const userState = atom({
-  key: "userState",
+export const userId = atom({
+  key: "userId",
   default: {
-    createdAt: null,
-    email: "",
-    food_expenses: 0,
-    id: 0,
-    start_day: 0,
-    updatedAt: null,
-    username: "",
+    uid: "",
   },
   effects_UNSTABLE: [persistAtom],
 });
+
+const userState = atom({
+  key: "userState",
+  default: {
+    email: "",
+    family_name: "",
+    given_name: "",
+    granted_scopes: "",
+    id: "",
+    locale: "",
+    name: "",
+    picture: "",
+    verified_email: false,
+  },
+});
+
+export { userState };

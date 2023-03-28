@@ -46,8 +46,11 @@ const ButtonForm = ({
       onClick={onClick}
       startIcon={icon}
       sx={{
-        backgroundColor: theme.color.mainColor,
+        backgroundColor: buttonColor || theme.color.mainColor,
         "&:hover": { backgroundColor: theme.color.mainColor },
+        border: 1,
+        borderColor: theme.color.subColor,
+        borderRadius: "30px",
         // "& .Mui-disabled": {
         //   backgroundColor: "grey",
         // },

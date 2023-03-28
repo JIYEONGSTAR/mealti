@@ -14,8 +14,8 @@ export const darkTheme = {
   color: {
     textColor: "#fff",
     backgroundColor: "#2B2B2B",
-    mainColor: "321F28",
-    subColor: "#E79E4F",
-    pointColor: "#A05344",
+    mainColor: "#E4A84F",
+    subColor: "#1E5C52",
+    pointColor: "#6F7347",
   },
 };
