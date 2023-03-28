@@ -1,22 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
-function ThemeToggle({
-  onChangeColorMode,
-  isDark,
-}: {
-  onChangeColorMode: () => void;
-  isDark: boolean;
-}) {
+import { CustomThemeContext } from "context/ThemeProvider";
+function ThemeToggle() {
+  const { theme, onChangeTheme } = useContext(CustomThemeContext);
   return (
-    <ToggleWrapper onClick={onChangeColorMode} mode={isDark}>
-      {isDark ? "🌕" : "🌞"}
+    <ToggleWrapper onClick={onChangeTheme}>
+      {theme === "dark" ? "🌕" : "🌞"}
     </ToggleWrapper>
   );
 }
 
 export default ThemeToggle;
 
-const ToggleWrapper = styled.button<{ mode: boolean }>`
+const ToggleWrapper = styled.button`
   background-color: ${(props) => props.theme.color.backgroundColor};
   border: 1px solid gray;
   display: flex;

@@ -3,7 +3,8 @@ import Layout from "components/Layout";
 import { RecoilRoot } from "recoil";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { createGlobalStyle, ThemeProvider, css } from "styled-components";
+import { createGlobalStyle } from "styled-components";
+import ThemeProvider from "context/ThemeProvider";
 import { lightTheme, darkTheme } from "theme";
 import "styles/globals.css";
 import { fireAuth } from "firebase/clientApp";
@@ -11,6 +12,9 @@ import { fireAuth } from "firebase/clientApp";
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
 * {
+  padding:0;
+  margin:0;
+  box-sizing:border-box;
   color : ${(props) => props.theme.color.textColor};
   background-color:"transparent";
   font-family: 'Noto Sans KR', sans-serif;
@@ -36,12 +40,12 @@ export default function App({ Component, pageProps }: AppProps) {
         setIsLogin(false);
       }
     });
-  }, [isLogin, router]);
+  }, [isLogin]);
 
   if (router.pathname.startsWith("/auth")) {
     return (
       <RecoilRoot>
-        <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+        <ThemeProvider>
           <GlobalStyle />
           <Component {...pageProps} />
         </ThemeProvider>
@@ -50,7 +54,7 @@ export default function App({ Component, pageProps }: AppProps) {
   }
   return (
     <RecoilRoot>
-      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+      <ThemeProvider>
         <GlobalStyle />
         <Layout onChangeColorMode={_toggleSwitch} isDark={isDark}>
           <Component {...pageProps} />

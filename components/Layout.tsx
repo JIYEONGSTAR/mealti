@@ -21,6 +21,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   min-height: 100vh;
+  background-color: ${({ theme }) => theme.color.backgroundColor};
 `;
 const Wrapper = styled.div`
   display: flex;
