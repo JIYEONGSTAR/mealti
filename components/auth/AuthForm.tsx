@@ -1,182 +1,114 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import React, { useContext } from "react";
 import Input from "components/ui/Input";
 import Button from "components/ui/ButtonForm";
 import styled, { ThemeContext } from "styled-components";
-import { useAuth } from "hooks/api/auth/index";
 import { useRouter } from "next/router";
 import useCurrentUser from "hooks/useCurrentUser";
-import Checkbox from "@mui/material/Checkbox";
-interface ICredentialProps {
-  email: boolean;
-  password: boolean;
-  confirmPassword: boolean;
-}
-interface IAccountProps {
-  email: string;
-  password: string;
-  confirmPassword: string;
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { firestore, fireAuth } from "firebase/clientApp";
+interface InputForm {
+  initialDate: number;
+  budget: number;
 }
 
-interface IAuthFormProps {
-  isLogin?: boolean;
-}
-const AuthForm = ({ isLogin }: IAuthFormProps) => {
-  const theme = useContext(ThemeContext);
-  const route = useRouter();
-  const { setCurrentUser } = useCurrentUser();
-  const { postSignUp, postLogin } = useAuth();
-  const [form, setForm] = useState({
-    emailForm: "",
-    passwordForm: "",
-    nickNameForm: "",
-    startDayForm: 0,
-    expenseForm: 0,
+const AuthForm = ({ isEdit }: { isEdit: boolean }) => {
+  const { currentUser } = useCurrentUser();
+  const router = useRouter();
+  const [uid, setUid] = useState<string>("");
+  const [form, setForm] = useState<InputForm>({
+    initialDate: 0,
+    budget: 0,
   });
-  const { emailForm, passwordForm, nickNameForm, startDayForm, expenseForm } =
-    form;
-  const [isCheckAuthLogin, setIsCheckAutoLogin] = useState<boolean>(true);
-  const [isCheckAgree, setIsCheckAgree] = useState<boolean>(false);
+
+  useEffect(() => {
+    // if (currentUser.id === "") {
+    //   router.push("/auth/login");
+    // } else {
+    console.log("authform", currentUser);
+    setUid(currentUser.id);
+
+    // }
+  }, []);
+
+  useEffect(() => {
+    if (uid) {
+      const getUserInfo = async () => {
+        const userInfo = await getDoc(doc(firestore, `users`, uid));
+        console.log("userInfo", userInfo.data());
+        userInfo.data() &&
+          setForm({
+            initialDate: userInfo.data()!.initialDate,
+            budget: userInfo.data()!.budget,
+          });
+      };
+      getUserInfo();
+    }
+  }, [uid]);
+
+  const { initialDate, budget } = form;
   const [buttonDisabled, setButtonDisabled] = useState<boolean>(true);
   const handleUpdateValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
-    if (!isLogin) {
-      if (
-        form.emailForm &&
-        form.passwordForm &&
-        form.nickNameForm &&
-        form.startDayForm &&
-        form.expenseForm
-      ) {
-        // 다 입력이 되면 활성화
-        setButtonDisabled(false);
-      } else {
-        setButtonDisabled(true);
-      }
-    } else {
-      if (form.emailForm && form.passwordForm) {
-        setButtonDisabled(false);
-      } else {
-        setButtonDisabled(true);
-      }
-    }
-  };
-  const submitHandler = () => {
-    console.log(emailForm, passwordForm);
-    if (!isLogin) {
-      postSignUp({
-        email: emailForm,
-        password: passwordForm,
-        username: nickNameForm,
-        start_day: startDayForm,
-        food_expenses: expenseForm,
-      }).then((r: any) => route.push("/login"));
-    } else {
-      postLogin({ email: emailForm, password: passwordForm }).then((r: any) => {
-        return (
-          setCurrentUser({ ...r }),
-          localStorage.setItem("user", JSON.stringify({ ...r })),
-          route.push("/")
-        );
-      });
-    }
 
-    // onSubmit();
+    if (initialDate && budget) {
+      setButtonDisabled(false);
+    } else {
+      setButtonDisabled(true);
+    }
   };
+
+  const submitHandler = async () => {
+    await setDoc(doc(firestore, "users", uid), {
+      initialDate,
+      budget,
+    }).then((res) => router.push("/"));
+  };
+
   return (
-    <AuthFormWrapper>
-      <AuthInputWrapper>
-        <Input
-          name="emailForm"
-          type="email"
-          label="이메일을 입력해주세요"
-          onUpdateValue={handleUpdateValue}
-          value={emailForm}
-          keyboardType="email-address"
-          placeholder="입력하기"
-        ></Input>
-        <Input
-          name="passwordForm"
-          type="password"
-          label="비밀번호를 입력해주세요"
-          onUpdateValue={handleUpdateValue}
-          secure
-          value={passwordForm}
-          placeholder="입력하기"
-        />
-        {!isLogin && (
-          <>
+    <AuthFormContainer>
+      {!isEdit ? (
+        <>
+          <>한달 초기화 날짜 : {form.initialDate}</>
+          <>비용 : {form.budget}</>
+        </>
+      ) : (
+        <>
+          <AuthInputWrapper>
             <Input
-              name="nickNameForm"
-              label="원하는 닉네임을 입력해주세요"
-              placeholder="입력하기"
-              value={nickNameForm}
-              onUpdateValue={handleUpdateValue}
-            />
-            <Input
-              name="startDayForm"
+              name="initialDate"
               label="매월 달력의 초기화 날짜를 입력해주세요."
               placeholder="입력하기"
               keyboardType="number-pad"
-              value={startDayForm}
+              value={initialDate}
               onUpdateValue={handleUpdateValue}
             />
             <Input
-              name="expenseForm"
+              name="budget"
               label="한달 식비 예상 금액을 입력해주세요."
               placeholder="입력하기"
               keyboardType="number-pad"
-              value={expenseForm}
+              value={budget}
               onUpdateValue={handleUpdateValue}
             />
-          </>
-        )}
-      </AuthInputWrapper>
-      <CheckBoxWrapper>
-        {isLogin ? (
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <Checkbox
-              size="small"
-              sx={{
-                color: theme.color.subColor,
-                "&.Mui-checked": {
-                  color: theme.color.subColor,
-                },
-              }}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setIsCheckAutoLogin(event.target.checked);
-              }}
-            ></Checkbox>
-            <div>자동로그인</div>
-          </div>
-        ) : (
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <Checkbox
-              size="small"
-              //   color={theme.color.subColor}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setIsCheckAgree(event.target.checked);
-              }}
-            ></Checkbox>
-            <div>개인정보수집동의</div>
-          </div>
-        )}
-      </CheckBoxWrapper>
-      <ButtonWrapper>
-        <Button
-          disabled={isLogin ? buttonDisabled : !isCheckAgree && buttonDisabled}
-          text={isLogin ? "로그인" : "회원가입"}
-          onClick={submitHandler}
-        />
-      </ButtonWrapper>
-    </AuthFormWrapper>
+          </AuthInputWrapper>
+          <ButtonWrapper>
+            <Button
+              disabled={buttonDisabled}
+              text={"정보저장하기"}
+              onClick={submitHandler}
+            />
+          </ButtonWrapper>
+        </>
+      )}
+    </AuthFormContainer>
   );
 };
 
 export default AuthForm;
 
-const AuthFormWrapper = styled.div`
+const AuthFormContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -189,14 +121,9 @@ const AuthInputWrapper = styled.div`
   justify-content: center;
   width: 100%;
 `;
-const CheckBoxWrapper = styled.div`
-  margin: 20px, 10px;
-  display: flex;
-  justify-content: flex-start;
-  width: 80%;
-`;
 
 const ButtonWrapper = styled.div`
+  margin: 20px;
   display: flex;
   align-items: center;
   justify-content: center;

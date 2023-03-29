@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import "firebaseui/dist/firebaseui.css";
 import { auth } from "firebaseui";
-import { useRouter } from "next/router";
 interface Props {
   // The Firebase UI Web UI Config object.
   // See: https://github.com/firebase/firebaseui-web#configuration
@@ -24,7 +23,6 @@ const StyledFirebaseAuth = ({
   className,
   uiCallback,
 }: Props) => {
-  const router = useRouter();
   const [firebaseui, setFirebaseui] = useState<
     typeof import("firebaseui") | null
   >(null);

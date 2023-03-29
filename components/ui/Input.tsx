@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import styled, { ThemeContext } from "styled-components";
-import SquareIcon from "@mui/icons-material/Square";
 import TextField from "@mui/material/TextField";
 const Input = ({
   name,
@@ -14,16 +13,10 @@ const Input = ({
   return (
     <InputContainer>
       {label && (
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            marginBottom: "10px",
-          }}
-        >
-          <SquareIcon sx={{ color: theme.color.subColor, fontSize: "10px" }} />
+        <LabelContainer>
+          <Icon />
           <LabelText isInvalid>{label}</LabelText>
-        </div>
+        </LabelContainer>
       )}
       <TextInput
         autoFocus={true}
@@ -34,6 +27,9 @@ const Input = ({
         value={value}
         placeholder={placeholder}
         sx={{
+          "& .MuiInputBase-input ": {
+            color: theme.color.textColor,
+          },
           "& label.Mui-focused": {
             color: theme.color.subColor,
           },
@@ -58,7 +54,7 @@ const Input = ({
 };
 
 export default Input;
-interface IInvalidProps {
+interface InvalidProps {
   isInvalid: boolean;
 }
 const InputContainer = styled.div`
@@ -67,17 +63,29 @@ const InputContainer = styled.div`
   width: 100%;
   border-radius: 15px;
   width: 80%;
-  margin-bottom: 3px;
+  margin-bottom: 15px;
 `;
-const LabelText = styled.div<IInvalidProps>`
+const LabelText = styled.div<InvalidProps>`
   margin: 2px;
 `;
 
-const TextInput = styled(TextField)<IInvalidProps>`
+const TextInput = styled(TextField)<InvalidProps>`
   padding: 8px;
   margin-bottom: 15px;
   border-radius: 15px;
   height: 50px;
   font-size: 16px;
   border-color: ${(props) => props.theme.color.backgroundColor};
+`;
+
+const LabelContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+`;
+
+const Icon = styled.div`
+  width: 7px;
+  height: 7px;
+  background-color: ${({ theme }) => theme.color.subColor};
 `;

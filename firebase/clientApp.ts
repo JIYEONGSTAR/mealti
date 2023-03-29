@@ -4,9 +4,9 @@ import { getFirestore } from "firebase/firestore";
 import "firebase/compat/auth";
 import firebaseConfig from "firebaseConfig.json";
 
-firebase.initializeApp(firebaseConfig);
+const app = firebase.initializeApp(firebaseConfig);
 
-const firestore = getFirestore();
+const firestore = getFirestore(app);
 const fireAuth = firebase.auth();
 
 export { firestore, fireAuth };

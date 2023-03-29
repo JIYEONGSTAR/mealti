@@ -10,11 +10,14 @@ const LargeText = ({ text }: { text: string }) => {
 
 export default LargeText;
 
-const LargeTextWrapper = styled.div``;
+const LargeTextWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 const LargeTextContainer = styled.p`
   color: ${(props) => props.theme.color.subColor};
   font-size: 30px;
   font-weight: 700;
   text-shadow: 2px 2px 2px gray;
-  margin-bottom: 20px;
 `;

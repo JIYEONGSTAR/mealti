@@ -5,6 +5,8 @@ import "firebase/compat/auth";
 import { useRouter } from "next/router";
 import { fireAuth } from "firebase/clientApp";
 import useCurrentUser from "hooks/useCurrentUser";
+import AuthContainer from "components/auth/AuthContainer";
+import Seo from "components/Seo";
 function Login() {
   const router = useRouter();
   // Configure FirebaseUI.
@@ -25,7 +27,7 @@ function Login() {
       signInSuccessWithAuthResult: (res: any) => {
         setCurrentUser(res.additionalUserInfo.profile);
         if (res.additionalUserInfo.isNewUser) {
-          router.push("/signup");
+          router.push("/auth/initialization");
         } else {
           router.push("/");
         }
@@ -35,9 +37,12 @@ function Login() {
   };
 
   return (
-    <div>
-      <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={fireAuth} />
-    </div>
+    <>
+      <Seo title="Auth" />
+      <AuthContainer>
+        <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={fireAuth} />
+      </AuthContainer>
+    </>
   );
 }
 

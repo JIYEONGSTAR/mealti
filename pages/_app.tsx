@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { createGlobalStyle } from "styled-components";
 import ThemeProvider from "context/ThemeProvider";
-import { lightTheme, darkTheme } from "theme";
 import "styles/globals.css";
 import { fireAuth } from "firebase/clientApp";
 //전역스타일 지정
@@ -24,8 +23,6 @@ export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   // 라이트모드 다크모드
 
-  const [isDark, setIsDark] = useState(false);
-  const _toggleSwitch = () => setIsDark(!isDark);
   const [isLogin, setIsLogin] = useState(false);
 
   useEffect(() => {
@@ -56,7 +53,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <RecoilRoot>
       <ThemeProvider>
         <GlobalStyle />
-        <Layout onChangeColorMode={_toggleSwitch} isDark={isDark}>
+        <Layout>
           <Component {...pageProps} />
         </Layout>
       </ThemeProvider>
