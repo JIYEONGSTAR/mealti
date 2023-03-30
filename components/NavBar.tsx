@@ -62,17 +62,18 @@ const NavBar = () => {
           Meal
         </LinkWrapper>
         <LinkWrapper
+          active={router.pathname === "/register" ? "active" : ""}
+          href="/register"
+        >
+          +
+        </LinkWrapper>
+        <LinkWrapper
           active={router.pathname === "/recipe" ? "active" : ""}
           href="/recipe"
         >
           recipe
         </LinkWrapper>
-        <LinkWrapper
-          active={router.pathname === "/community" ? "active" : ""}
-          href="/community"
-        >
-          community
-        </LinkWrapper>
+
         <LinkWrapper
           active={router.pathname === "/mypage" ? "active" : ""}
           href="/mypage"

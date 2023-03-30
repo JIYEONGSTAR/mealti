@@ -1,6 +1,40 @@
-import React, { useContext } from "react";
+import React, { ChangeEvent, useContext } from "react";
 import styled, { ThemeContext } from "styled-components";
 import TextField from "@mui/material/TextField";
+interface InputProps {
+  name?: string;
+  label?: string;
+  onUpdateValue: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value: string | number;
+  placeholder?: string;
+  type?: inputType;
+  size?: "small" | "medium";
+  isRow?: boolean;
+}
+type inputType =
+  | "button"
+  | "checkbox"
+  | "color"
+  | "date"
+  | "datetime-local"
+  | "email"
+  | "file"
+  | "hidden"
+  | "image"
+  | "month"
+  | "number"
+  | "password"
+  | "radio"
+  | "range"
+  | "reset"
+  | "search"
+  | "submit"
+  | "tel"
+  | "text"
+  | "time"
+  | "url"
+  | "week";
+
 const Input = ({
   name,
   label,
@@ -8,24 +42,27 @@ const Input = ({
   value,
   placeholder,
   type,
-}: any) => {
+  size = "medium",
+  isRow = false,
+}: InputProps) => {
   const theme = useContext(ThemeContext);
   return (
-    <InputContainer>
+    <InputContainer isRow={isRow}>
       {label && (
         <LabelContainer>
           <Icon />
-          <LabelText isInvalid>{label}</LabelText>
+          <LabelText>{label}</LabelText>
         </LabelContainer>
       )}
       <TextInput
+        isRow={isRow}
         autoFocus={true}
         name={name}
-        isInvalid
         type={type}
         onChange={onUpdateValue}
         value={value}
         placeholder={placeholder}
+        size={size}
         sx={{
           "& .MuiInputBase-input ": {
             color: theme.color.textColor,
@@ -57,31 +94,34 @@ export default Input;
 interface InvalidProps {
   isInvalid: boolean;
 }
-const InputContainer = styled.div`
+interface IsRowProps {
+  isRow: boolean;
+}
+const InputContainer = styled.div<IsRowProps>`
   display: flex;
-  flex-direction: column;
-  width: 100%;
-  border-radius: 15px;
+  flex-direction: ${({ isRow }) => (isRow ? "row" : "column")};
   width: 80%;
   margin-bottom: 15px;
+  justify-content: space-between;
 `;
-const LabelText = styled.div<InvalidProps>`
+const LabelText = styled.div`
   margin: 2px;
 `;
 
-const TextInput = styled(TextField)<InvalidProps>`
+const TextInput = styled(TextField)<IsRowProps>`
   padding: 8px;
   margin-bottom: 15px;
-  border-radius: 15px;
-  height: 50px;
+  border-radius: 35px;
+  height: 30px;
   font-size: 16px;
   border-color: ${(props) => props.theme.color.backgroundColor};
+  width: ${({ isRow }) => (isRow ? "80%" : "100%")};
 `;
 
 const LabelContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin-top: 5px;
 `;
 
 const Icon = styled.div`

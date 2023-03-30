@@ -38,7 +38,7 @@ function Login() {
 
   return (
     <>
-      <Seo title="Auth" />
+      <Seo title="로그인" />
       <AuthContainer>
         <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={fireAuth} />
       </AuthContainer>

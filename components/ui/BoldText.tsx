@@ -1,5 +1,10 @@
 import React from "react";
-const BoldText = ({ children, fontSize }: any) => {
+
+interface BoldTextProps {
+  children: React.ReactNode;
+  fontSize: number;
+}
+const BoldText = ({ children, fontSize }: BoldTextProps) => {
   return (
     <span style={{ fontWeight: "bold", fontSize: fontSize }}>{children}</span>
   );

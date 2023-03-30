@@ -4,15 +4,19 @@ import { useRouter } from "next/router";
 import AuthForm from "components/auth/AuthForm";
 import ButtonForm from "components/ui/ButtonForm";
 import styled from "styled-components";
+import Seo from "components/Seo";
 const index = () => {
   const router = useRouter();
 
   const [isEdit, setIsEdit] = useState(false);
   return (
-    <MyPageWrapper>
-      <button onClick={() => setIsEdit(!isEdit)}>바꾸기</button>
-      <AuthForm isEdit={isEdit} />
-    </MyPageWrapper>
+    <>
+      <Seo title="마이페이지" />
+      <MyPageWrapper>
+        <button onClick={() => setIsEdit(!isEdit)}>바꾸기</button>
+        <AuthForm isEdit={isEdit} />
+      </MyPageWrapper>
+    </>
   );
 };
 
