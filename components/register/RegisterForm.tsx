@@ -115,7 +115,6 @@ const RegisterForm = () => {
           type="date"
           onUpdateValue={handleChange}
           size="small"
-          isRow
         />
         <Input
           name="menu"
@@ -123,7 +122,6 @@ const RegisterForm = () => {
           value={menu}
           onUpdateValue={handleChange}
           size="small"
-          isRow
         />
         <Input
           name="cost"
@@ -132,7 +130,6 @@ const RegisterForm = () => {
           value={cost}
           onUpdateValue={handleChange}
           size="small"
-          isRow
         />
         <Input
           name="location"
@@ -140,7 +137,6 @@ const RegisterForm = () => {
           value={location}
           onUpdateValue={handleChange}
           size="small"
-          isRow
         />
         <Input
           name="restaurant"
@@ -148,7 +144,6 @@ const RegisterForm = () => {
           value={restaurant}
           onUpdateValue={handleChange}
           size="small"
-          isRow
         />
         <Input
           name="content"
@@ -173,7 +168,7 @@ const RegisterFormContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: ${({ theme }) => theme.color.backgroundColor};
+  background-color: ${({ theme }) => theme.color.mainColor};
 `;
 const RegisterFormTitleWraper = styled.div`
   display: flex;
@@ -183,7 +178,7 @@ const RegisterFormTitleWraper = styled.div`
 `;
 const RegisterFormWrapper = styled.div`
   width: 90%;
-  background-color: ${({ theme }) => theme.color.mainColor};
+  background-color: ${({ theme }) => theme.color.backgroundColor};
   border-radius: 30px;
   display: flex;
   flex-direction: column;
@@ -196,7 +191,7 @@ const RegisterFormWrapper = styled.div`
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
-  margin: 2rem 0;
+  /* margin: 2rem 0; */
   width: 100%;
 `;
 

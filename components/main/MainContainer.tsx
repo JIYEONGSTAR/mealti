@@ -18,7 +18,7 @@ const MainContainer = () => {
       <WelcomeWrapper>
         <WelcomeTextWrapper>
           <BoldText fontSize={30}>{currentUser.name} 님, </BoldText>
-          <div style={{ fontSize: "30px" }}>식사 하셨나요?</div>
+          <div style={{ fontSize: "1.5rem" }}>식사 하셨나요?</div>
         </WelcomeTextWrapper>
         <WelcomeIconWrapper>
           <RestaurantIcon sx={{ width: 100, height: 100 }} />
@@ -36,8 +36,6 @@ const MainContainer = () => {
               onClick={() => {
                 router.push("/meal");
               }}
-              // buttonColor={theme.color.mainColor}
-              color="black"
             />
           </HalfWrapper>
           <HalfWrapper>
@@ -49,8 +47,6 @@ const MainContainer = () => {
               onClick={() => {
                 router.push("/recipe");
               }}
-              // buttonColor="white"
-              color="black"
             />
           </HalfWrapper>
         </PostWrapper>
@@ -77,7 +73,7 @@ const WelcomeWrapper = styled.div`
   width: 100%;
   height: 100%;
   color: ${({ theme }) => theme.color.textColor};
-  padding: 50px;
+  padding: 3rem;
 `;
 const PostWrapper = styled.div`
   flex: 1;
@@ -93,8 +89,8 @@ const HalfWrapper = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding: 50px;
-  gap: 20px;
+  padding: 2rem;
+  gap: 1rem;
 `;
 const WelcomeTextWrapper = styled.div`
   display: flex;

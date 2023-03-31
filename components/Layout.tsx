@@ -16,7 +16,6 @@ const Layout = ({ children }: LayoutProps) => {
         <NavBar />
         {children}
       </Wrapper>
-      <ThemeToggle />
     </Container>
   );
 };

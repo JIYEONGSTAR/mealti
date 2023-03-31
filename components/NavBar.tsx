@@ -1,5 +1,5 @@
 // 네비게이션 바
-import React from "react";
+import React, { useContext } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import styled, { css } from "styled-components";
@@ -10,19 +10,14 @@ import ButtonForm from "components/ui/ButtonForm";
 
 import useCurrentUser from "hooks/useCurrentUser";
 import { fireAuth } from "firebase/clientApp";
+import { ThemeContext } from "styled-components";
 const NavBar = () => {
+  const theme = useContext(ThemeContext);
   const { setCurrentUser } = useCurrentUser();
   const router = useRouter();
   return (
     <Nav>
-      <div
-        style={{
-          display: "flex",
-          width: "100%",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
+      <NavTopWrapper>
         <ButtonWrapper onClick={() => router.push("/")}>
           <LargeText text="MEALTI" />
         </ButtonWrapper>
@@ -31,8 +26,6 @@ const NavBar = () => {
             paddingStyle="0"
             fontSize="0.7rem"
             text="로그아웃"
-            buttonColor="white"
-            color="black"
             onClick={() => {
               console.log("logout");
               fireAuth.signOut();
@@ -50,7 +43,7 @@ const NavBar = () => {
             }}
           />
         </ButtonWrapper>
-      </div>
+      </NavTopWrapper>
       <NavWrapper>
         <LinkWrapper active={router.pathname === "/" ? "active" : ""} href="/">
           Home
@@ -80,6 +73,7 @@ const NavBar = () => {
         >
           <PersonIcon />
         </LinkWrapper>
+        <ThemeToggle />
       </NavWrapper>
     </Nav>
   );
@@ -90,7 +84,7 @@ export default NavBar;
 const Nav = styled.nav`
   display: flex;
   width: 100%;
-  padding-top: 20px;
+
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -98,23 +92,32 @@ const Nav = styled.nav`
   /* rgba(0, 0, 0, 0.3) 0px 30px 60px -30px; */
   background-color: transparent;
 `;
+const NavTopWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem 0 1.5rem;
+`;
 const NavWrapper = styled.div`
   bottom: 0;
   position: fixed;
   display: flex;
-  gap: 10px;
+  /* gap: 1rem; */
   width: 480px;
   justify-content: center;
   align-items: center;
   background-color: ${(props) => props.theme.color.backgroundColor};
-  padding: 10px;
+  padding: 1rem;
   border-radius: 20px 20px 0 0;
+  z-index: 1000;
 `;
 const LinkWrapper = styled(Link)<{ active: string }>`
   font-weight: 600;
   font-size: 18px;
   margin: 0 20px 0 20px;
   color: ${(props) => props.theme.color.textColor};
+
   ${(props) =>
     props.active === "active" &&
     css`

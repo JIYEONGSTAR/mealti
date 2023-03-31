@@ -17,6 +17,7 @@ const GlobalStyle = createGlobalStyle`
   color : ${(props) => props.theme.color.textColor};
   background-color:"transparent";
   font-family: 'Noto Sans KR', sans-serif;
+  /* font-size: 62.5%; */
 }`;
 
 export default function App({ Component, pageProps }: AppProps) {

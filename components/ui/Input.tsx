@@ -9,7 +9,6 @@ interface InputProps {
   placeholder?: string;
   type?: inputType;
   size?: "small" | "medium";
-  isRow?: boolean;
 }
 type inputType =
   | "button"
@@ -43,45 +42,51 @@ const Input = ({
   placeholder,
   type,
   size = "medium",
-  isRow = false,
 }: InputProps) => {
   const theme = useContext(ThemeContext);
   return (
-    <InputContainer isRow={isRow}>
-      {label && (
+    <InputContainer>
+      {/* {label && (
         <LabelContainer>
           <Icon />
           <LabelText>{label}</LabelText>
         </LabelContainer>
-      )}
+      )} */}
       <TextInput
-        isRow={isRow}
-        autoFocus={true}
+        label={label}
+        // autoFocus={true}
         name={name}
         type={type}
         onChange={onUpdateValue}
         value={value}
-        placeholder={placeholder}
+        // placeholder={placeholder}
         size={size}
         sx={{
           "& .MuiInputBase-input ": {
             color: theme.color.textColor,
+            // background: "#fafafa",
+          },
+          "& label": {
+            color: theme.color.textColor,
           },
           "& label.Mui-focused": {
-            color: theme.color.subColor,
+            color: theme.color.textColor,
+            // background: "#fafafa",
           },
           "& .MuiInput-underline:after": {
-            borderBottomColor: theme.color.subColor,
+            // borderBottomColor: theme.color.subColor,
           },
           "& .MuiOutlinedInput-root": {
             "& fieldset": {
-              borderColor: theme.color.subColor,
+              // borderColor: theme.color.subColor,
+              backgroundColor: "transparent",
             },
             "&:hover fieldset": {
-              borderColor: theme.color.mainColor,
+              // borderColor: theme.color.mainColor,
             },
             "&.Mui-focused fieldset": {
               borderColor: theme.color.subColor,
+              backgroundColor: "transparent",
             },
           },
         }}
@@ -97,9 +102,8 @@ interface InvalidProps {
 interface IsRowProps {
   isRow: boolean;
 }
-const InputContainer = styled.div<IsRowProps>`
+const InputContainer = styled.div`
   display: flex;
-  flex-direction: ${({ isRow }) => (isRow ? "row" : "column")};
   width: 80%;
   margin-bottom: 15px;
   justify-content: space-between;
@@ -108,24 +112,18 @@ const LabelText = styled.div`
   margin: 2px;
 `;
 
-const TextInput = styled(TextField)<IsRowProps>`
-  padding: 8px;
-  margin-bottom: 15px;
-  border-radius: 35px;
-  height: 30px;
-  font-size: 16px;
-  border-color: ${(props) => props.theme.color.backgroundColor};
-  width: ${({ isRow }) => (isRow ? "80%" : "100%")};
+const TextInput = styled(TextField)`
+  width: 100%;
 `;
 
-const LabelContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin-top: 5px;
-`;
+// const LabelContainer = styled.div`
+//   display: flex;
+//   align-items: center;
+//   margin-top: 5px;
+// `;
 
-const Icon = styled.div`
-  width: 7px;
-  height: 7px;
-  background-color: ${({ theme }) => theme.color.subColor};
-`;
+// const Icon = styled.div`
+//   width: 7px;
+//   height: 7px;
+//   /* background-color: ${({ theme }) => theme.color.subColor}; */
+// `;
