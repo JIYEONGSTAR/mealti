@@ -16,6 +16,7 @@
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.9",
+    "@types/react-query": "^1.2.9",
     "axios": "^1.2.0",
     "babel-plugin-module-resolver": "^4.1.0",
     "date-fns": "^2.29.3",
