@@ -5,11 +5,15 @@ import styled from "styled-components";
 import ButtonForm from "components/ui/ButtonForm";
 import BoldText from "components/ui/BoldText";
 import useCurrentUser from "hooks/useCurrentUser";
-import { collection, addDoc } from "firebase/firestore";
-import { firestorage, firestore } from "firebase/clientApp";
+import { firestorage } from "firebase/clientApp";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid"; //firebase image upload용 id
-interface FormInput {
+import { useRouter } from "next/router";
+
+import { Meal } from "types";
+import { queryKeys } from "react-query/constants";
+import { usePostMeal } from "hooks/useMeal";
+export interface FormInput {
   date: string;
   menu: string;
   cost: number;
@@ -19,7 +23,9 @@ interface FormInput {
   image: string;
 }
 const RegisterForm = () => {
+  const router = useRouter();
   const { currentUser } = useCurrentUser();
+  const postMeal = usePostMeal();
   const [form, setForm] = useState<FormInput>({
     date: new Date().toJSON(),
     menu: "",
@@ -30,22 +36,27 @@ const RegisterForm = () => {
     image: "",
   });
   const { date, menu, cost, location, restaurant, content, image } = form;
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
+    console.log(name, value);
   };
-  const handleClick = async () => {
-    // 그러나 문서에 유의미한 ID를 두지 않고 Cloud Firestore에서 자동으로 ID를 생성하도록 하는 것이 편리한 때도 있습니다. 이렇게 하려면 다음과 같은 언어별 add() 메서드를 호출하면 됩니다.
-    await addDoc(collection(firestore, "posts"), {
+  const handleClick = () => {
+    postMeal({
       date,
       menu,
       cost,
       location,
       restaurant,
       content,
+      image,
       uid: currentUser.id,
-    }).then((res) => console.log(res));
+    });
+
+    router.push("/meal");
   };
+
   const handleFileUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const files = e.target.files;
