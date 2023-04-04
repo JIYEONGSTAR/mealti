@@ -22,7 +22,7 @@ const ButtonForm = ({
   widthStyle = "80%",
   paddingStyle = "5px 20px",
   buttonColor,
-  color = "white",
+  color,
   disabled,
   fontSize,
   onClick,
@@ -32,7 +32,7 @@ const ButtonForm = ({
     padding: paddingStyle,
     width: widthStyle,
     // backgroundColor: buttonColor
-    color,
+    // color,
     fontSize,
     textTransform: "none",
   };
@@ -46,8 +46,10 @@ const ButtonForm = ({
       onClick={onClick}
       startIcon={icon}
       sx={{
+        color: color || theme.color.backgroundColor,
         backgroundColor: buttonColor || theme.color.subColor,
         "&:hover": { backgroundColor: theme.color.mainColor },
+
         // border: 1,
         // borderColor: theme.color.subColor,
         borderRadius: "30px",

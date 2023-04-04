@@ -1,31 +1,30 @@
-import { useEffect, useState } from "react";
-import React, { useContext } from "react";
+import React, { useEffect, useState } from "react";
 import Input from "components/ui/Input";
 import Button from "components/ui/ButtonForm";
-import styled, { ThemeContext } from "styled-components";
+import styled from "styled-components";
 import { useRouter } from "next/router";
 import useCurrentUser from "hooks/useCurrentUser";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { firestore, fireAuth } from "firebase/clientApp";
+import { firestore } from "firebase/clientApp";
 interface InputForm {
   initialDate: number;
   budget: number;
 }
 
-const AuthForm = ({ isEdit }: { isEdit: boolean }) => {
+const InitializationForm = ({ isEdit }: { isEdit: boolean }) => {
   const { currentUser } = useCurrentUser();
   const router = useRouter();
   const [uid, setUid] = useState<string>("");
   const [form, setForm] = useState<InputForm>({
-    initialDate: 0,
+    initialDate: 1,
     budget: 0,
   });
 
   useEffect(() => {
     // if (currentUser.id === "") {
-    //   router.push("/auth/login");
+    //   router.push("/Initialization/login");
     // } else {
-    console.log("authform", currentUser);
+    // console.log("Initializationform", currentUser);
     setUid(currentUser.id);
 
     // }
@@ -59,7 +58,7 @@ const AuthForm = ({ isEdit }: { isEdit: boolean }) => {
     }
   };
 
-  const submitHandler = async () => {
+  const handleSubmit = async () => {
     await setDoc(doc(firestore, "users", uid), {
       initialDate,
       budget,
@@ -67,7 +66,7 @@ const AuthForm = ({ isEdit }: { isEdit: boolean }) => {
   };
 
   return (
-    <AuthFormContainer>
+    <InitializationFormContainer>
       {!isEdit ? (
         <>
           <>한달 초기화 날짜 : {form.initialDate}</>
@@ -75,12 +74,12 @@ const AuthForm = ({ isEdit }: { isEdit: boolean }) => {
         </>
       ) : (
         <>
-          <AuthInputWrapper>
+          <InitializationInputWrapper>
             <Input
               name="initialDate"
               label="매월 달력의 초기화 날짜를 입력해주세요."
               placeholder="입력하기"
-              keyboardType="number-pad"
+              type="number"
               value={initialDate}
               onUpdateValue={handleUpdateValue}
             />
@@ -88,33 +87,33 @@ const AuthForm = ({ isEdit }: { isEdit: boolean }) => {
               name="budget"
               label="한달 식비 예상 금액을 입력해주세요."
               placeholder="입력하기"
-              keyboardType="number-pad"
+              type="number"
               value={budget}
               onUpdateValue={handleUpdateValue}
             />
-          </AuthInputWrapper>
+          </InitializationInputWrapper>
           <ButtonWrapper>
             <Button
               disabled={buttonDisabled}
               text={"정보저장하기"}
-              onClick={submitHandler}
+              onClick={handleSubmit}
             />
           </ButtonWrapper>
         </>
       )}
-    </AuthFormContainer>
+    </InitializationFormContainer>
   );
 };
 
-export default AuthForm;
+export default InitializationForm;
 
-const AuthFormContainer = styled.div`
+const InitializationFormContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
 `;
-const AuthInputWrapper = styled.div`
+const InitializationInputWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
