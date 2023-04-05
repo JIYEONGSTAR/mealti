@@ -4,38 +4,60 @@ import {
   useQuery,
   useQueryClient,
 } from "react-query";
-import { Meal } from "types";
+import { EMeal, Meal } from "types";
 import { firestore } from "firebase/clientApp";
-import { collection, query, where, getDocs, addDoc } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  addDoc,
+  Timestamp,
+} from "firebase/firestore";
 
 import { queryKeys } from "react-query/constants";
 
-const getMeals = async () => {
+const getMeals = async (uid: string, startDate?: string, endDate?: string) => {
+  console.log("uid", uid);
   //uid불러올 방법 생각하기 (seccion-storage? cookie? localStroge?)
   const mealRef = collection(firestore, "posts");
-  const q = query(mealRef, where("uid", "==", "116399980174675314701"));
+
+  const q =
+    startDate && endDate
+      ? query(
+          mealRef,
+          where("uid", "==", uid),
+          where("date", ">=", Timestamp.fromDate(new Date(startDate))), //시작날
+          where("date", "<=", Timestamp.fromDate(new Date(endDate))) //끝날
+        )
+      : query(mealRef, where("uid", "==", uid));
 
   const querySnapshot = await getDocs(q);
 
-  const data: Meal[] = [];
+  const data: EMeal[] = [];
   querySnapshot.forEach((doc) => {
-    data.push(doc.data() as Meal);
-    console.log(doc.id, "", doc.data());
+    data.push(doc.data() as EMeal);
   });
   return data;
 };
 
-export function useMeal() {
-  const fallback: any = [];
+export function useMeal(
+  uid: string,
+  startDate?: string,
+  endDate?: string
+): EMeal[] {
+  const fallback: EMeal[] = [];
 
-  const { data = fallback } = useQuery(queryKeys.meals, getMeals);
+  const { data = fallback } = useQuery([queryKeys.meals, startDate], () =>
+    getMeals(uid, startDate, endDate)
+  );
 
   return data;
 }
 
 async function postMeal(meal: Meal): Promise<void> {
   await addDoc(collection(firestore, "posts"), {
-    date: meal.date,
+    date: Timestamp.fromDate(new Date(meal.date)),
     menu: meal.menu,
     cost: meal.cost,
     location: meal.location,

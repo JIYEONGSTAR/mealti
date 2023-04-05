@@ -7,11 +7,11 @@ interface IRenderHeader {
   baseDay: Date;
   onMonthChangeClick: (direction: string) => void;
 }
+const INITDAY = 10;
 const RenderHeader = ({ baseDay, onMonthChangeClick }: IRenderHeader) => {
-  if (baseDay.getDate() < 10) {
+  if (baseDay.getDate() < INITDAY) {
     baseDay = subMonths(baseDay, 1);
   }
-  // console.log("헤더에 받은 현재 날짜", baseDay, format(baseDay, "MMM"));
   return (
     <RenderHeaderContainer>
       <ArrowBackIcon onClick={() => onMonthChangeClick("prev")} />

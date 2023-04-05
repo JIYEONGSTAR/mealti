@@ -5,7 +5,7 @@ interface InputProps {
   name?: string;
   label?: string;
   onUpdateValue: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  value: string | number;
+  value: string | number | Date;
   placeholder?: string;
   type?: inputType;
   size?: "small" | "medium";
@@ -115,15 +115,3 @@ const LabelText = styled.div`
 const TextInput = styled(TextField)`
   width: 100%;
 `;
-
-// const LabelContainer = styled.div`
-//   display: flex;
-//   align-items: center;
-//   margin-top: 5px;
-// `;
-
-// const Icon = styled.div`
-//   width: 7px;
-//   height: 7px;
-//   /* background-color: ${({ theme }) => theme.color.subColor}; */
-// `;

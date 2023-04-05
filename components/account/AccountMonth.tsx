@@ -3,20 +3,24 @@ import React, { useState, useEffect } from "react";
 import { calendarDate } from "components/calendar/calendarDate";
 import { addMonths, subMonths } from "date-fns";
 import { RenderHeader, RenderDays, RenderMonth } from "components/calendar";
-import { useContext } from "react";
+
 import styled, { ThemeContext } from "styled-components";
 import BoldText from "components/ui/BoldText";
 import SquareLog from "components/SquareLog";
 
-const AccountMonth = () => {
-  const theme = useContext(ThemeContext);
+import { EMeal } from "types";
+
+interface AccountMonthProps {
+  meal: EMeal[];
+}
+const AccountMonth = ({ meal }: AccountMonthProps) => {
   const offset = 1000 * 60 * 60 * 9; //한국 시간으로 바꾸기 위해
 
   const [selectedDay, setSelectedDay] = useState(
     new Date(new Date().getTime() + offset).toISOString().split("T")[0]
   ); //밑에 보여줄 선택된 날짜
 
-  const [todayAccount, setTodayAccount] = useState([]); //오늘의 기록
+  const [todayAccount, setTodayAccount] = useState<EMeal[]>([]); //오늘의 기록
 
   const INITDAY = 10;
 
@@ -28,7 +32,6 @@ const AccountMonth = () => {
     calendarDate({ date: baseDay, INITDAY }).datesOfMonth
   ); // 월별 달력에 넘길 데이터
 
-  const [monthStringList, setMonthStringList] = useState<string[]>([]);
   const handleArrowPress = (direction: string) => {
     if (direction === "prev") {
       setBaseDay(subMonths(baseDay, 1));
@@ -36,13 +39,18 @@ const AccountMonth = () => {
       setBaseDay(addMonths(baseDay, 1));
     }
   };
+
   useEffect(() => {
     setMonthList(calendarDate({ date: baseDay, INITDAY }).datesOfMonth);
-    setMonthStringList(
-      calendarDate({ date: baseDay, INITDAY }).activeMonthList
-    );
   }, [baseDay]);
 
+  useEffect(() => {
+    setTodayAccount(
+      meal.filter(
+        (el) => el.date.toDate().toISOString().split("T")[0] === selectedDay
+      )
+    );
+  }, [selectedDay]);
   return (
     <AccountMonthWrapper>
       <CalendarWrapper>
@@ -54,9 +62,10 @@ const AccountMonth = () => {
           <RenderDays />
           <RenderMonth
             monthList={monthList}
-            onClick={(item: any) => {
-              return setSelectedDay(item.toISOString().split("T")[0]);
+            onClick={(date) => {
+              return setSelectedDay(date);
             }}
+            meal={meal}
           />
         </CalendarBorderWrapper>
       </CalendarWrapper>
@@ -64,7 +73,7 @@ const AccountMonth = () => {
         <div>{selectedDay}의 나의식사기록</div>
         {todayAccount?.length !== 0 ? (
           <FlatList>
-            {todayAccount.map((el: any, idx: any) => (
+            {todayAccount.map((el, idx) => (
               <SquareLog item={el} key={idx} />
             ))}
           </FlatList>
@@ -77,11 +86,6 @@ const AccountMonth = () => {
 };
 
 export default AccountMonth;
-
-const FlatList = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-`;
 
 const AccountMonthWrapper = styled.div`
   display: flex;
@@ -118,7 +122,13 @@ const CalendarBorderWrapper = styled.div`
 const LogWrapper = styled.div`
   flex: 1;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   width: 100%;
   height: 100%;
+`;
+
+const FlatList = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 `;
