@@ -20,7 +20,7 @@ const AccountMonth = ({ meal }: AccountMonthProps) => {
     new Date(new Date().getTime() + offset).toISOString().split("T")[0]
   ); //밑에 보여줄 선택된 날짜
 
-  const [todayAccount, setTodayAccount] = useState<EMeal[]>([]); //오늘의 기록
+  const [todayAccount, setTodayAccount] = useState<EMeal[]>(); //오늘의 기록
 
   const INITDAY = 10;
 
@@ -47,10 +47,10 @@ const AccountMonth = ({ meal }: AccountMonthProps) => {
   useEffect(() => {
     setTodayAccount(
       meal.filter(
-        (el) => el.date.toDate().toISOString().split("T")[0] === selectedDay
+        (el) => el.date.toDate().toISOString().slice(0, 10) === selectedDay
       )
     );
-  }, [selectedDay]);
+  }, [selectedDay, meal]);
   return (
     <AccountMonthWrapper>
       <CalendarWrapper>
@@ -73,7 +73,7 @@ const AccountMonth = ({ meal }: AccountMonthProps) => {
         <div>{selectedDay}의 나의식사기록</div>
         {todayAccount?.length !== 0 ? (
           <FlatList>
-            {todayAccount.map((el, idx) => (
+            {todayAccount?.map((el, idx) => (
               <SquareLog item={el} key={idx} />
             ))}
           </FlatList>
@@ -123,7 +123,7 @@ const LogWrapper = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  align-items: center;
   width: 100%;
   height: 100%;
 `;
@@ -131,4 +131,5 @@ const LogWrapper = styled.div`
 const FlatList = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  width: 90%;
 `;

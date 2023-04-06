@@ -18,7 +18,7 @@ const RenderDay = ({ date, meal }: IRenderDayProps) => {
   const accountPerDate = meal
     ?.map((el) => [el.date.toDate().toISOString().slice(0, 10), el.cost])
     ?.reduce(
-      (acc: number, cur: any) => (cur[0] === dateTime ? acc + cur[1] : acc),
+      (acc: number, cur: any) => (cur[0] === dateTime ? +acc + +cur[1] : acc),
       0
     );
 
