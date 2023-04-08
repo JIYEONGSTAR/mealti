@@ -1,5 +1,5 @@
 import Input from "components/ui/Input";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useRef, useState } from "react";
 import Image from "next/image";
 import styled from "styled-components";
 import ButtonForm from "components/ui/ButtonForm";
@@ -10,9 +10,8 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid"; //firebase image upload용 id
 import { useRouter } from "next/router";
 
-import { Meal } from "types";
-import { queryKeys } from "react-query/constants";
 import { usePostMeal } from "hooks/useMeal";
+import { EMeal } from "types";
 export interface FormInput {
   date: string;
   menu: string;
@@ -22,37 +21,57 @@ export interface FormInput {
   content: string;
   image: string;
 }
-const RegisterForm = () => {
+const RegisterForm = ({ isEdit, data }: { isEdit?: boolean; data?: EMeal }) => {
   const router = useRouter();
   const { currentUser } = useCurrentUser();
   const postMeal = usePostMeal();
-  const [form, setForm] = useState<FormInput>({
-    date: new Date().toJSON(),
-    menu: "",
-    cost: 0,
-    location: "",
-    restaurant: "",
-    content: "",
-    image: "",
-  });
+  const initForm = {
+    date:
+      data?.date.toDate().toISOString().split("T")[0] ??
+      new Date().toISOString().split("T")[0],
+    menu: data?.menu ?? "",
+    cost: data?.cost ?? 0,
+    location: data?.location ?? "",
+    restaurant: data?.restaurant ?? "",
+    content: data?.content ?? "",
+    image: data?.image ?? "",
+  };
+  const [form, setForm] = useState<FormInput>({ ...initForm });
+
   const { date, menu, cost, location, restaurant, content, image } = form;
 
+  console.log("date", date, typeof date);
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
     setForm({ ...form, [name]: value });
-    console.log(name, value);
   };
+
   const handleClick = () => {
-    postMeal({
-      date,
-      menu,
-      cost,
-      location,
-      restaurant,
-      content,
-      image,
-      uid: currentUser.id,
-    });
+    {
+      !isEdit
+        ? postMeal({
+            date,
+            menu,
+            cost,
+            location,
+            restaurant,
+            content,
+            image,
+            uid: currentUser.id,
+          })
+        : console.log("수정 코드 작성");
+      // editMeal({
+      //   date,
+      //   menu,
+      //   cost,
+      //   location,
+      //   restaurant,
+      //   content,
+      //   image,
+      //   uid: currentUser.id,
+      // })
+    }
 
     router.push("/meal");
   };
@@ -92,11 +111,33 @@ const RegisterForm = () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             console.log("File available at", downloadURL);
             setForm({ ...form, image: downloadURL });
+            // setImagesss((prev) => [
+            //   ...prev,
+            //   `<Image src=${downloadURL} alt="" width={100} height={100}`,
+            // ]);
+            setForm((prevForm) => ({
+              ...prevForm,
+              content:
+                prevForm.content +
+                `<Image src=${downloadURL} alt="" width={100} height={100} />`,
+            }));
           });
         }
       );
     }
   };
+
+  // const showContent = (content: String) => {
+  //   const regex = /(<([^>]+)>)/gi;
+  //   const result = content.replace(regex, "image삽입됨");
+  //   return result;
+  // };
+  // const changeText: JsxElement = (content: string) => {
+  //   // 정규표현식을 사용하여 문자열에서 이미지 URL 추출
+
+  //   return <></>;
+  // };
+
   return (
     <RegisterFormContainer>
       <RegisterFormTitleWraper>
@@ -119,6 +160,7 @@ const RegisterForm = () => {
           onChange={handleFileUpload}
           hidden
         />
+
         <Input
           name="date"
           label="날짜"
@@ -162,6 +204,7 @@ const RegisterForm = () => {
           value={content}
           onUpdateValue={handleChange}
         />
+
         <ButtonWrapper>
           <ButtonForm text={"저장하기"} onClick={handleClick} />
         </ButtonWrapper>

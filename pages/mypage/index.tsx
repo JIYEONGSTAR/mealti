@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import AuthForm from "components/auth/AuthForm";
+import InitializationForm from "components/auth/InitializationForm";
 import ButtonForm from "components/ui/ButtonForm";
 import styled from "styled-components";
 import Seo from "components/Seo";
@@ -14,7 +14,7 @@ const index = () => {
       <Seo title="마이페이지" />
       <MyPageWrapper>
         <button onClick={() => setIsEdit(!isEdit)}>바꾸기</button>
-        <AuthForm isEdit={isEdit} />
+        <InitializationForm isEdit={isEdit} />
       </MyPageWrapper>
     </>
   );
