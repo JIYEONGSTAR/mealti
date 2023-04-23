@@ -14,3 +14,19 @@ export interface Meal {
 export interface EMeal extends Omit<Meal, "date"> {
   date: Timestamp;
 }
+
+export interface Recipe {
+  id: string;
+  categoryIds: string[];
+  title: string;
+  imageUrl: string;
+  ingredients: string[];
+  steps: string[];
+  duration: number;
+  complexity: string;
+  affordability: string;
+  isGlutenFree: boolean;
+  isVegan: boolean;
+  isVegetarian: boolean;
+  isLactoseFree: boolean;
+}
