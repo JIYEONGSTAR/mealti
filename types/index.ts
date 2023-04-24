@@ -17,7 +17,7 @@ export interface EMeal extends Omit<Meal, "date"> {
 
 export interface Recipe {
   id: string;
-  categoryIds: string[];
+  categories: string[];
   title: string;
   imageUrl: string;
   ingredients: string[];
@@ -25,8 +25,4 @@ export interface Recipe {
   duration: number;
   complexity: string;
   affordability: string;
-  isGlutenFree: boolean;
-  isVegan: boolean;
-  isVegetarian: boolean;
-  isLactoseFree: boolean;
 }

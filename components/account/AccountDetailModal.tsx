@@ -16,7 +16,7 @@ const AccountDetailModal = ({
   const [kind, setKind] = useState<"read" | "edit">("read");
   return (
     <Modal show={isModalVisible} onClose={handleModalClose}>
-      <ModalContent title={data.menu} kind={kind} onClose={handleModalClose}>
+      <ModalContent title={data.menu} onClose={handleModalClose}>
         {kind === "read" ? (
           <>
             {data.menu}

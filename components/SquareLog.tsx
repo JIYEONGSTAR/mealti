@@ -45,13 +45,18 @@ const SquareLog = ({ item }: { item: EMeal }) => {
 
 export default SquareLog;
 
-const SquareLogContainer = styled.div`
+export const SquareLogContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 7rem;
   border: 4px solid ${({ theme }) => theme.color.subColor};
+  background-color: ${({ theme }) => theme.color.backgroundColor};
   border-radius: 20px;
   margin: 10px;
+  cursor: pointer;
+  :hover {
+    background-color: ${({ theme }) => theme.color.mainColor};
+  }
 `;

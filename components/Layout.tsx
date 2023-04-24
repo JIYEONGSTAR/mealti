@@ -33,5 +33,6 @@ const Wrapper = styled.div`
   flex-direction: column;
   width: 480px;
   height: 100%;
+  overflow: auto;
   background-color: ${({ theme }) => theme.color.mainColor};
 `;

@@ -5,7 +5,6 @@ interface IModalContentProps {
   title: ReactNode;
   children: ReactNode;
   onClose: () => void;
-  kind: "edit" | "read";
 }
 
 // Modal 창 open 시 title, content
@@ -19,25 +18,22 @@ export const ModalContent = ({
       <CloseButton>
         <div onClick={onClose}>x</div>
       </CloseButton>
-
-      <HeaderWrapper>
-        <div>{title}</div>
-      </HeaderWrapper>
-      <Content>
-        <div>{children}</div>
-      </Content>
+      <HeaderWrapper>{title}</HeaderWrapper>
+      <Content>{children}</Content>
     </Wrapper>
   );
 };
 
 // 전체 Modal 창
 const Wrapper = styled.div`
-  width: 480px;
-  border-radius: 10px;
+  width: 430px;
+  height: 60%;
+  border-radius: 50px;
   padding: 20px;
   margin: 10px;
   background-color: #fff;
-  overflow: scroll;
+
+  /* overflow: scroll; */
 `;
 
 // Modal title
@@ -61,4 +57,5 @@ const CloseButton = styled.div`
 // Modal content
 const Content = styled.div`
   width: 100%;
+  height: 90%;
 `;
