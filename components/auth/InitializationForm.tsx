@@ -3,9 +3,10 @@ import Input from "components/ui/Input";
 import Button from "components/ui/ButtonForm";
 import styled from "styled-components";
 import { useRouter } from "next/router";
-import useCurrentUser from "hooks/useCurrentUser";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import useCurrentUser, { useUserInfo } from "hooks/useCurrentUser";
+import { doc, setDoc, updateDoc } from "firebase/firestore";
 import { firestore } from "firebase/clientApp";
+import { UserInfo } from "types";
 interface InputForm {
   initialDate: number;
   budget: number;
@@ -13,37 +14,13 @@ interface InputForm {
 
 const InitializationForm = ({ isEdit }: { isEdit: boolean }) => {
   const { currentUser } = useCurrentUser();
+  const userInfo = useUserInfo(currentUser.id) as UserInfo;
+  console.log(userInfo);
   const router = useRouter();
-  const [uid, setUid] = useState<string>("");
   const [form, setForm] = useState<InputForm>({
-    initialDate: 1,
-    budget: 0,
+    initialDate: userInfo.initialDate,
+    budget: userInfo.budget,
   });
-
-  useEffect(() => {
-    // if (currentUser.id === "") {
-    //   router.push("/Initialization/login");
-    // } else {
-    // console.log("Initializationform", currentUser);
-    setUid(currentUser.id);
-
-    // }
-  }, []);
-
-  useEffect(() => {
-    if (uid) {
-      const getUserInfo = async () => {
-        const userInfo = await getDoc(doc(firestore, `users`, uid));
-        console.log("userInfo", userInfo.data());
-        userInfo.data() &&
-          setForm({
-            initialDate: userInfo.data()!.initialDate,
-            budget: userInfo.data()!.budget,
-          });
-      };
-      getUserInfo();
-    }
-  }, [uid]);
 
   const { initialDate, budget } = form;
   const [buttonDisabled, setButtonDisabled] = useState<boolean>(true);
@@ -59,10 +36,18 @@ const InitializationForm = ({ isEdit }: { isEdit: boolean }) => {
   };
 
   const handleSubmit = async () => {
-    await setDoc(doc(firestore, "users", uid), {
-      initialDate,
-      budget,
-    }).then((res) => router.push("/"));
+    //todo: react-query관리
+    if (!isEdit) {
+      await setDoc(doc(firestore, "users", currentUser.id), {
+        initialDate,
+        budget,
+      }).then((res) => router.push("/"));
+    } else {
+      await setDoc(doc(firestore, "users", currentUser.id), {
+        initialDate,
+        budget,
+      }).then((res) => console.log(res));
+    }
   };
 
   return (

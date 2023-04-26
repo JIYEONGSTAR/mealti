@@ -26,3 +26,8 @@ export interface Recipe {
   complexity: string;
   affordability: string;
 }
+
+export interface UserInfo {
+  budget: number;
+  initialDate: number;
+}
