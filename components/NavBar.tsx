@@ -128,6 +128,7 @@ const NavTopWrapper = styled.div`
 const NavWrapper = styled.div`
   position: fixed;
   bottom: 0;
+  height: 5vh;
   /* background-color: ${(props) => props.theme.color.backgroundColor}; */
   /* box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
     rgba(0, 0, 0, 0.3) 0px 30px 60px -30px; */
@@ -138,7 +139,7 @@ const NavWrapper = styled.div`
   width: 480px;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 10;
   > ul {
     width: 100%;
     display: flex;

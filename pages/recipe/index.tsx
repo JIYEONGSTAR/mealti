@@ -26,6 +26,8 @@ const RecipeWrapper = styled.div`
     padding: 0 20px;
   }
   padding: 20px;
+  height: 87vh;
+  overflow: auto;
 `;
 
 const RecipeContainer = styled.div`

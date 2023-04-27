@@ -3,23 +3,32 @@ import Input from "components/ui/Input";
 import Button from "components/ui/ButtonForm";
 import styled from "styled-components";
 import { useRouter } from "next/router";
-import useCurrentUser, { useUserInfo } from "hooks/useCurrentUser";
+import useCurrentUser from "hooks/useCurrentUser";
 import { doc, setDoc, updateDoc } from "firebase/firestore";
 import { firestore } from "firebase/clientApp";
 import { UserInfo } from "types";
+import { usePostUserInfo, usePatchUserInfo } from "hooks/useUser";
 interface InputForm {
   initialDate: number;
   budget: number;
 }
 
-const InitializationForm = ({ isEdit }: { isEdit: boolean }) => {
+const InitializationForm = ({
+  isEdit,
+  userInfo,
+}: {
+  isEdit: boolean;
+  userInfo?: UserInfo;
+}) => {
   const { currentUser } = useCurrentUser();
-  const userInfo = useUserInfo(currentUser.id) as UserInfo;
+
+  const postInfo = usePostUserInfo();
+  const patchInfo = usePatchUserInfo();
   console.log(userInfo);
   const router = useRouter();
   const [form, setForm] = useState<InputForm>({
-    initialDate: userInfo.initialDate,
-    budget: userInfo.budget,
+    initialDate: userInfo?.initialDate ?? 1,
+    budget: userInfo?.budget ?? 0,
   });
 
   const { initialDate, budget } = form;
@@ -27,8 +36,7 @@ const InitializationForm = ({ isEdit }: { isEdit: boolean }) => {
   const handleUpdateValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
-
-    if (initialDate && budget) {
+    if (initialDate > 0 && initialDate < 30 && budget > 0) {
       setButtonDisabled(false);
     } else {
       setButtonDisabled(true);
@@ -36,27 +44,31 @@ const InitializationForm = ({ isEdit }: { isEdit: boolean }) => {
   };
 
   const handleSubmit = async () => {
-    //todo: react-query관리
-    if (!isEdit) {
-      await setDoc(doc(firestore, "users", currentUser.id), {
-        initialDate,
-        budget,
-      }).then((res) => router.push("/"));
+    if (isEdit) {
+      postInfo({
+        uid: currentUser.id,
+        budget: form.budget,
+        initialDate: form.initialDate,
+      });
     } else {
-      await setDoc(doc(firestore, "users", currentUser.id), {
-        initialDate,
-        budget,
-      }).then((res) => console.log(res));
+      patchInfo({
+        uid: currentUser.id,
+        budget: form.budget,
+        initialDate: form.initialDate,
+      });
+      alert("정보가 수정되었습니다.");
     }
+
+    router.push("/");
   };
 
   return (
     <InitializationFormContainer>
       {!isEdit ? (
-        <>
-          <>한달 초기화 날짜 : {form.initialDate}</>
-          <>비용 : {form.budget}</>
-        </>
+        <InitializationInputWrapper>
+          <p>한달 초기화 날짜 : {form.initialDate}</p>
+          <p>비용 : {form.budget}</p>
+        </InitializationInputWrapper>
       ) : (
         <>
           <InitializationInputWrapper>
@@ -97,6 +109,7 @@ const InitializationFormContainer = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
+  /* height: 100%; */
 `;
 const InitializationInputWrapper = styled.div`
   display: flex;
@@ -104,6 +117,7 @@ const InitializationInputWrapper = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
+  height: 70%;
 `;
 
 const ButtonWrapper = styled.div`

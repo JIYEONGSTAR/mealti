@@ -9,7 +9,8 @@ import BoldText from "components/ui/BoldText";
 import SquareLog from "components/SquareLog";
 
 import { EMeal, UserInfo } from "types";
-import useCurrentUser, { useUserInfo } from "hooks/useCurrentUser";
+import useCurrentUser from "hooks/useCurrentUser";
+import { useUserInfo } from "hooks/useUser";
 
 interface AccountMonthProps {
   meal: EMeal[];
@@ -17,7 +18,6 @@ interface AccountMonthProps {
 const AccountMonth = ({ meal }: AccountMonthProps) => {
   const { currentUser } = useCurrentUser();
   const userInfo = useUserInfo(currentUser.id) as UserInfo;
-  console.log("uuuserInfo", userInfo);
   const offset = 1000 * 60 * 60 * 9; //한국 시간으로 바꾸기 위해
 
   const [selectedDay, setSelectedDay] = useState(

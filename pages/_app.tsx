@@ -29,25 +29,19 @@ export default function App({ Component, pageProps }: AppProps) {
     });
   }, [isLogin]);
 
-  if (router.pathname.startsWith("/auth")) {
-    return (
-      <RecoilRoot>
-        <ThemeProvider>
-          <GlobalStyle />
-          <Component {...pageProps} />
-        </ThemeProvider>
-      </RecoilRoot>
-    );
-  }
   return (
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydratedState}>
           <ThemeProvider>
             <GlobalStyle />
-            <Layout>
+            {router.pathname.startsWith("/auth") ? (
               <Component {...pageProps} />
-            </Layout>
+            ) : (
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            )}
           </ThemeProvider>
           <ReactQueryDevtools />
         </Hydrate>

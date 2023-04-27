@@ -4,7 +4,11 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ["localhost", "firebasestorage.googleapis.com"],
+    domains: [
+      "localhost",
+      "firebasestorage.googleapis.com",
+      "lh3.googleusercontent.com",
+    ],
   },
   async rewrites() {
     return [
