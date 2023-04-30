@@ -31,7 +31,8 @@ const Wrapper = styled.div`
   border-radius: 50px;
   padding: 20px;
   margin: 10px;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.color.backgroundColor};
+  color: ${({ theme }) => theme.color.textColor};
 
   /* overflow: scroll; */
 `;

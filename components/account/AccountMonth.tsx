@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import React, { useState, useEffect } from "react";
 import { calendarDate } from "components/calendar/calendarDate";
 import { addMonths, subMonths } from "date-fns";
@@ -69,6 +68,7 @@ const AccountMonth = ({ meal }: AccountMonthProps) => {
             onClick={(date) => {
               return setSelectedDay(date);
             }}
+            selectedDay={selectedDay}
             meal={meal}
           />
         </CalendarBorderWrapper>

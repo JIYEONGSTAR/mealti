@@ -3,6 +3,7 @@ import { Modal } from "components/modal";
 import { ModalContent } from "components/modal/ModalContent";
 import { EMeal } from "types";
 import RegisterForm from "components/register/RegisterForm";
+import ButtonForm from "components/ui/ButtonForm";
 interface AccountDetailModalProps {
   isModalVisible: boolean;
   data: EMeal;
@@ -23,8 +24,8 @@ const AccountDetailModal = ({
             {data.cost}
             {data.restaurant}
             {data.image}
-            <button onClick={() => setKind("edit")}>수정하기</button>
-            <button>삭제하기</button>
+            <ButtonForm onClick={() => setKind("edit")} text="수정하기" />
+            <ButtonForm onClick={() => setKind("edit")} text="삭제하기" />
           </>
         ) : (
           <RegisterForm isEdit={true} data={data} />
