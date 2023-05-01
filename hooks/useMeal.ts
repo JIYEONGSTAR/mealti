@@ -13,6 +13,8 @@ import {
   getDocs,
   addDoc,
   Timestamp,
+  updateDoc,
+  doc,
 } from "firebase/firestore";
 
 import { queryKeys } from "react-query/constants";
@@ -36,7 +38,7 @@ const getMeals = async (uid: string, startDate?: string, endDate?: string) => {
 
   const data: EMeal[] = [];
   querySnapshot.forEach((doc) => {
-    data.push(doc.data() as EMeal);
+    data.push({ ...doc.data(), id: doc.id } as EMeal);
   });
   return data;
 };
@@ -68,10 +70,37 @@ async function postMeal(meal: Meal): Promise<void> {
   });
 }
 
+async function patchMeal(meal: EMeal): Promise<void> {
+  await updateDoc(doc(firestore, "posts", meal.id), {
+    date: Timestamp.fromDate(new Date(meal.date as string)),
+    menu: meal.menu,
+    cost: meal.cost,
+    location: meal.location,
+    restarurat: meal.restaurant,
+    content: meal.content,
+    image: meal.image,
+  });
+}
+
 export function usePostMeal(): UseMutateFunction<void, unknown, Meal, unknown> {
   // 그러나 문서에 유의미한 ID를 두지 않고 Cloud Firestore에서 자동으로 ID를 생성하도록 하는 것이 편리한 때도 있습니다. 이렇게 하려면 다음과 같은 언어별 add() 메서드를 호출하면 됩니다.
   const queryClient = useQueryClient();
   const { mutate } = useMutation((meal: Meal) => postMeal(meal), {
+    onSuccess: () => {
+      queryClient.invalidateQueries([queryKeys.meals]);
+    },
+  });
+  return mutate;
+}
+
+export function usePatchMeal(): UseMutateFunction<
+  void,
+  unknown,
+  EMeal,
+  unknown
+> {
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation((meal: EMeal) => patchMeal(meal), {
     onSuccess: () => {
       queryClient.invalidateQueries([queryKeys.meals]);
     },

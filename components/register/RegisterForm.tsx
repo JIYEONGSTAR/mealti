@@ -10,7 +10,7 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid"; //firebase image upload용 id
 import { useRouter } from "next/router";
 
-import { usePostMeal } from "hooks/useMeal";
+import { usePatchMeal, usePostMeal } from "hooks/useMeal";
 import { EMeal } from "types";
 export interface FormInput {
   date: string;
@@ -21,13 +21,23 @@ export interface FormInput {
   content: string;
   image: string;
 }
-const RegisterForm = ({ isEdit, data }: { isEdit?: boolean; data?: EMeal }) => {
+const RegisterForm = ({
+  isEdit,
+  data,
+  setIsEdit,
+}: {
+  isEdit?: boolean;
+  data?: EMeal;
+  setIsEdit?: () => void;
+}) => {
   const router = useRouter();
   const { currentUser } = useCurrentUser();
   const postMeal = usePostMeal();
+  const patchMeal = usePatchMeal();
   const initForm = {
     date:
-      data?.date.toDate().toISOString().split("T")[0] ??
+      (typeof data?.date !== "string" &&
+        data?.date.toDate().toISOString().split("T")[0]) ||
       new Date().toISOString().split("T")[0],
     menu: data?.menu ?? "",
     cost: data?.cost ?? 0,
@@ -61,16 +71,18 @@ const RegisterForm = ({ isEdit, data }: { isEdit?: boolean; data?: EMeal }) => {
             uid: currentUser.id,
           })
         : console.log("수정 코드 작성");
-      // editMeal({
-      //   date,
-      //   menu,
-      //   cost,
-      //   location,
-      //   restaurant,
-      //   content,
-      //   image,
-      //   uid: currentUser.id,
-      // })
+      patchMeal({
+        id: data?.id!,
+        date,
+        menu,
+        cost,
+        location,
+        restaurant,
+        content,
+        image,
+        uid: currentUser.id,
+      });
+      setIsEdit && setIsEdit();
     }
 
     router.push("/meal");
@@ -127,6 +139,9 @@ const RegisterForm = ({ isEdit, data }: { isEdit?: boolean; data?: EMeal }) => {
     }
   };
 
+  const handleCancel = () => {
+    setIsEdit && setIsEdit();
+  };
   // const showContent = (content: String) => {
   //   const regex = /(<([^>]+)>)/gi;
   //   const result = content.replace(regex, "image삽입됨");
@@ -139,9 +154,11 @@ const RegisterForm = ({ isEdit, data }: { isEdit?: boolean; data?: EMeal }) => {
   // };
 
   return (
-    <RegisterFormContainer>
+    <RegisterFormContainer isEdit={isEdit}>
       <RegisterFormTitleWraper>
-        <BoldText fontSize={20}>오늘의 식사 기록하기</BoldText>
+        <BoldText fontSize={20}>
+          오늘의 식사 {isEdit ? "수정" : "기록"}하기
+        </BoldText>
       </RegisterFormTitleWraper>
       <RegisterFormWrapper>
         {image ? (
@@ -206,7 +223,11 @@ const RegisterForm = ({ isEdit, data }: { isEdit?: boolean; data?: EMeal }) => {
         />
 
         <ButtonWrapper>
-          <ButtonForm text={"저장하기"} onClick={handleClick} />
+          {isEdit && <ButtonForm text={"취소"} onClick={handleCancel} />}
+          <ButtonForm
+            text={isEdit ? "수정하기" : "저장하기"}
+            onClick={handleClick}
+          />
         </ButtonWrapper>
       </RegisterFormWrapper>
     </RegisterFormContainer>
@@ -215,14 +236,15 @@ const RegisterForm = ({ isEdit, data }: { isEdit?: boolean; data?: EMeal }) => {
 
 export default RegisterForm;
 
-const RegisterFormContainer = styled.div`
+const RegisterFormContainer = styled.div<{ isEdit: boolean | undefined }>`
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: ${({ theme }) => theme.color.mainColor};
+  background-color: ${({ theme, isEdit }) =>
+    !isEdit ? theme.color.mainColor : theme.color.backgroundColor};
 `;
 const RegisterFormTitleWraper = styled.div`
   display: flex;
@@ -240,6 +262,7 @@ const RegisterFormWrapper = styled.div`
   align-items: center;
   padding: 1rem 0;
   margin: 1rem;
+  position: relative;
 `;
 
 const ButtonWrapper = styled.div`
@@ -247,6 +270,8 @@ const ButtonWrapper = styled.div`
   justify-content: center;
   /* margin: 2rem 0; */
   width: 100%;
+  position: absolute;
+  bottom: 0;
 `;
 
 const ImageLabel = styled.label`

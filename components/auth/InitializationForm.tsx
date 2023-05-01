@@ -4,10 +4,8 @@ import Button from "components/ui/ButtonForm";
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import useCurrentUser from "hooks/useCurrentUser";
-import { doc, setDoc, updateDoc } from "firebase/firestore";
-import { firestore } from "firebase/clientApp";
 import { UserInfo } from "types";
-import { usePostUserInfo, usePatchUserInfo } from "hooks/useUser";
+import { usePostUserInfo } from "hooks/useUser";
 interface InputForm {
   initialDate: number;
   budget: number;
@@ -23,7 +21,6 @@ const InitializationForm = ({
   const { currentUser } = useCurrentUser();
 
   const postInfo = usePostUserInfo();
-  const patchInfo = usePatchUserInfo();
   console.log(userInfo);
   const router = useRouter();
   const [form, setForm] = useState<InputForm>({
@@ -44,18 +41,14 @@ const InitializationForm = ({
   };
 
   const handleSubmit = async () => {
-    if (isEdit) {
-      postInfo({
-        uid: currentUser.id,
-        budget: form.budget,
-        initialDate: form.initialDate,
-      });
+    postInfo({
+      uid: currentUser.id,
+      budget: form.budget,
+      initialDate: form.initialDate,
+    });
+    if (!isEdit) {
+      alert("정보가 저장되었습니다.");
     } else {
-      patchInfo({
-        uid: currentUser.id,
-        budget: form.budget,
-        initialDate: form.initialDate,
-      });
       alert("정보가 수정되었습니다.");
     }
 

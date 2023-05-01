@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import styled from "styled-components";
-
+import CloseIcon from "@mui/icons-material/Close";
 interface IModalContentProps {
   title: ReactNode;
   children: ReactNode;
@@ -16,7 +16,9 @@ export const ModalContent = ({
   return (
     <Wrapper>
       <CloseButton>
-        <div onClick={onClose}>x</div>
+        <div onClick={onClose}>
+          <CloseIcon />
+        </div>
       </CloseButton>
       <HeaderWrapper>{title}</HeaderWrapper>
       <Content>{children}</Content>
@@ -53,6 +55,7 @@ const CloseButton = styled.div`
   &:active {
     color: lightgray;
   }
+  z-index: 5;
 `;
 
 // Modal content

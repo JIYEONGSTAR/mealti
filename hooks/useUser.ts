@@ -15,15 +15,6 @@ const postUserInfo = async ({ uid, initialDate, budget }: UserInfoUid) => {
   return { res, uid };
 };
 
-const patchUserInfo = async ({ uid, initialDate, budget }: UserInfoUid) => {
-  const res = await setDoc(doc(firestore, "users", uid), {
-    initialDate,
-    budget,
-  });
-
-  return { res, uid };
-};
-
 const getUserInfo = async (uid: string) => {
   const userInfo = await getDoc(doc(firestore, `users`, uid));
   console.log("userInfo", userInfo.data());
@@ -44,25 +35,6 @@ export const usePostUserInfo = () => {
   const queryClient = useQueryClient();
   const { mutate } = useMutation(
     (request: UserInfoUid) => postUserInfo(request),
-    {
-      onSuccess: ({ res, uid }) => {
-        queryClient.invalidateQueries([queryKeys.user]);
-        queryClient.setQueryData([queryKeys.user], () => {
-          return getUserInfo(uid);
-        });
-      },
-      onError: () => {
-        alert("오류발생");
-      },
-    }
-  );
-  return mutate;
-};
-
-export const usePatchUserInfo = () => {
-  const queryClient = useQueryClient();
-  const { mutate } = useMutation(
-    (request: UserInfoUid) => patchUserInfo(request),
     {
       onSuccess: ({ res, uid }) => {
         queryClient.invalidateQueries([queryKeys.user]);
