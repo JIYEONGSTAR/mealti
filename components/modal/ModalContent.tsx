@@ -32,7 +32,6 @@ const Wrapper = styled.div`
   height: 60%;
   border-radius: 50px;
   padding: 20px;
-  margin: 10px;
   background-color: ${({ theme }) => theme.color.backgroundColor};
   color: ${({ theme }) => theme.color.textColor};
 
@@ -62,4 +61,5 @@ const CloseButton = styled.div`
 const Content = styled.div`
   width: 100%;
   height: 90%;
+  overflow: scroll;
 `;

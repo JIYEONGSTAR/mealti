@@ -155,11 +155,12 @@ const RegisterForm = ({
 
   return (
     <RegisterFormContainer isEdit={isEdit}>
-      <RegisterFormTitleWraper>
-        <BoldText fontSize={20}>
-          오늘의 식사 {isEdit ? "수정" : "기록"}하기
-        </BoldText>
-      </RegisterFormTitleWraper>
+      {!isEdit && (
+        <RegisterFormTitleWraper>
+          <BoldText fontSize={20}>오늘의 식사 기록하기</BoldText>
+        </RegisterFormTitleWraper>
+      )}
+
       <RegisterFormWrapper>
         {image ? (
           <ImageLabel htmlFor="imageInput">
@@ -238,7 +239,7 @@ export default RegisterForm;
 
 const RegisterFormContainer = styled.div<{ isEdit: boolean | undefined }>`
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -260,7 +261,7 @@ const RegisterFormWrapper = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-  padding: 1rem 0;
+  /* padding: 1rem 0; */
   margin: 1rem;
   position: relative;
 `;
@@ -270,8 +271,6 @@ const ButtonWrapper = styled.div`
   justify-content: center;
   /* margin: 2rem 0; */
   width: 100%;
-  position: absolute;
-  bottom: 0;
 `;
 
 const ImageLabel = styled.label`

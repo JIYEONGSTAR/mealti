@@ -16,11 +16,11 @@ function Login() {
     signInFlow: "popup",
     // emailAuth and googleAuth
     signInOptions: [
-      {
-        provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-        requireDisplayName: true,
-        buttonColor: "#FFBC58",
-      },
+      // {
+      //   provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+      //   requireDisplayName: true,
+      //   buttonColor: "#FFBC58",
+      // },
       firebase.auth.GoogleAuthProvider.PROVIDER_ID,
     ],
     callbacks: {

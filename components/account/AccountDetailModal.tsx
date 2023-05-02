@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal } from "components/modal";
 import { ModalContent } from "components/modal/ModalContent";
 import { EMeal } from "types";
@@ -6,7 +6,7 @@ import RegisterForm from "components/register/RegisterForm";
 import ButtonForm from "components/ui/ButtonForm";
 import styled from "styled-components";
 import Image from "next/image";
-//todo:디자인수정하기
+
 interface AccountDetailModalProps {
   isModalVisible: boolean;
   data: EMeal;
@@ -18,11 +18,19 @@ const AccountDetailModal = ({
   data,
 }: AccountDetailModalProps) => {
   const [kind, setKind] = useState<"read" | "edit">("read");
+
+  const handleClose = () => {
+    handleModalClose();
+    setKind("read");
+  };
   return (
     <>
-      {kind === "read" ? (
-        <Modal show={isModalVisible} onClose={handleModalClose}>
-          <ModalContent title={data.menu} onClose={handleModalClose}>
+      <Modal show={isModalVisible} onClose={handleClose}>
+        <ModalContent
+          title={kind === "read" ? data.menu : "메뉴수정"}
+          onClose={handleClose}
+        >
+          {kind === "read" ? (
             <Div>
               <SubDiv>
                 {data.image && (
@@ -48,24 +56,15 @@ const AccountDetailModal = ({
                 </ButtonWrapper>
               </SubDiv>
             </Div>
-          </ModalContent>
-        </Modal>
-      ) : (
-        <Modal show={kind === "edit"} onClose={handleModalClose}>
-          <ModalContent
-            title=""
-            onClose={() => {
-              handleModalClose();
-            }}
-          >
+          ) : (
             <RegisterForm
               isEdit={true}
               data={data}
               setIsEdit={() => setKind("read")}
             />
-          </ModalContent>
-        </Modal>
-      )}
+          )}
+        </ModalContent>
+      </Modal>
     </>
   );
 };
