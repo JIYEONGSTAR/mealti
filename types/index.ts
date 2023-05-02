@@ -12,7 +12,7 @@ export interface Meal {
 }
 
 export interface EMeal extends Omit<Meal, "date"> {
-  date: Timestamp | string;
+  date: Timestamp;
   id: string;
 }
 

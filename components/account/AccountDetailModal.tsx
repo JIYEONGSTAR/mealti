@@ -6,6 +6,7 @@ import RegisterForm from "components/register/RegisterForm";
 import ButtonForm from "components/ui/ButtonForm";
 import styled from "styled-components";
 import Image from "next/image";
+import { useDeleteMeal } from "hooks/useMeal";
 
 interface AccountDetailModalProps {
   isModalVisible: boolean;
@@ -19,10 +20,18 @@ const AccountDetailModal = ({
 }: AccountDetailModalProps) => {
   const [kind, setKind] = useState<"read" | "edit">("read");
 
+  const deleteMeal = useDeleteMeal();
+
+  const handleDelete = () => {
+    deleteMeal(data.id);
+    alert("삭제되었습니다.");
+    handleModalClose();
+  };
   const handleClose = () => {
     handleModalClose();
     setKind("read");
   };
+
   return (
     <>
       <Modal show={isModalVisible} onClose={handleClose}>
@@ -52,7 +61,7 @@ const AccountDetailModal = ({
                     }}
                     text="수정하기"
                   />
-                  <ButtonForm onClick={() => setKind("edit")} text="삭제하기" />
+                  <ButtonForm onClick={handleDelete} text="삭제하기" />
                 </ButtonWrapper>
               </SubDiv>
             </Div>

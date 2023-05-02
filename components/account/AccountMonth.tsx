@@ -98,6 +98,7 @@ const AccountMonthWrapper = styled.div`
   width: 100%;
   height: 100%;
   overflow: auto;
+  padding-bottom: 5.5vh;
 `;
 
 const CalendarWrapper = styled.div`
@@ -130,6 +131,7 @@ const LogWrapper = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
+  overflow: auto;
 `;
 
 const FlatList = styled.div`

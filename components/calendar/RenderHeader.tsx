@@ -45,4 +45,8 @@ const RenderHeaderContainer = styled.div`
   width: 100%;
   justify-content: space-around;
   align-items: center;
+  > svg:hover {
+    cursor: pointer;
+    transform: scaleX(1.1);
+  }
 `;

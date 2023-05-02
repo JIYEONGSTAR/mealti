@@ -70,18 +70,18 @@ const RegisterForm = ({
             image,
             uid: currentUser.id,
           })
-        : console.log("수정 코드 작성");
-      patchMeal({
-        id: data?.id!,
-        date,
-        menu,
-        cost,
-        location,
-        restaurant,
-        content,
-        image,
-        uid: currentUser.id,
-      });
+        : patchMeal({
+            id: data?.id!,
+            date,
+            menu,
+            cost,
+            location,
+            restaurant,
+            content,
+            image,
+            uid: currentUser.id,
+          });
+      alert(`${!isEdit ? "저장" : "수정"}되었습니다.`);
       setIsEdit && setIsEdit();
     }
 
@@ -261,7 +261,7 @@ const RegisterFormWrapper = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-  /* padding: 1rem 0; */
+  padding-bottom: 1rem;
   margin: 1rem;
   position: relative;
 `;
