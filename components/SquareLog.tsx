@@ -9,7 +9,7 @@ const SquareLog = ({ item }: { item: EMeal }) => {
   // const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    console.log("isModalVisible변경", isModalVisible);
+    // console.log("isModalVisible변경", isModalVisible);
   }, [isModalVisible]);
 
   const handleModalClose = () => {

@@ -11,10 +11,8 @@ import RestaurantIcon from "@mui/icons-material/Restaurant";
 import { useUserInfo } from "hooks/useUser";
 const MainContainer = () => {
   const router = useRouter();
-  const { currentUser, setCurrentUser } = useCurrentUser();
+  const { currentUser } = useCurrentUser();
   useUserInfo(currentUser.id);
-  console.log("main", currentUser);
-  const theme = useContext(ThemeContext);
   return (
     <MainWrapper>
       <WelcomeWrapper>

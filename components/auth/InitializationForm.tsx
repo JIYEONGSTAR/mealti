@@ -21,7 +21,6 @@ const InitializationForm = ({
   const { currentUser } = useCurrentUser();
 
   const postInfo = usePostUserInfo();
-  console.log(userInfo);
   const router = useRouter();
   const [form, setForm] = useState<InputForm>({
     initialDate: userInfo?.initialDate ?? 1,

@@ -15,7 +15,6 @@ const index = () => {
     </RecipeWrapper>
   );
 };
-
 export default index;
 
 const RecipeWrapper = styled.div`

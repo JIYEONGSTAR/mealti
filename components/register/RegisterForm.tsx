@@ -50,7 +50,6 @@ const RegisterForm = ({
 
   const { date, menu, cost, location, restaurant, content, image } = form;
 
-  console.log("date", date, typeof date);
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
@@ -127,12 +126,12 @@ const RegisterForm = ({
             //   ...prev,
             //   `<Image src=${downloadURL} alt="" width={100} height={100}`,
             // ]);
-            setForm((prevForm) => ({
-              ...prevForm,
-              content:
-                prevForm.content +
-                `<Image src=${downloadURL} alt="" width={100} height={100} />`,
-            }));
+            // setForm((prevForm) => ({
+            //   ...prevForm,
+            //   content:
+            //     prevForm.content +
+            //     `<Image src=${downloadURL} alt="" width={100} height={100} />`,
+            // }));
           });
         }
       );

@@ -25,8 +25,7 @@ export const calendarDate = ({
     new Date(currentYear, currentMonth, 0).getTime() + offset
   ).getDate(); //다음달의 0번이 이번달의 마지막날
   const startDayOfTheWeek = startOfMonth.getDay();
-  const datesOfMonth = [];
-  const activeMonthList = [];
+  const datesOfMonth: { date: Date; isShow: boolean }[] = [];
   //시작일 전 날짜들
   for (let i = 0; i < startDayOfTheWeek; i++) {
     datesOfMonth.push({
@@ -37,7 +36,6 @@ export const calendarDate = ({
   // 활성화된 날짜들
   for (let i = 0; i < lastDayOfMonth; i++) {
     datesOfMonth.push({ date: addDays(startOfMonth, i), isShow: true });
-    activeMonthList.push(addDays(startOfMonth, i).toISOString().split("T")[0]);
   }
   const lastDayOfWeek = addDays(startOfMonth, lastDayOfMonth).getDay();
   //마지막 날짜들
@@ -52,6 +50,5 @@ export const calendarDate = ({
 
   return {
     datesOfMonth,
-    activeMonthList,
   };
 };

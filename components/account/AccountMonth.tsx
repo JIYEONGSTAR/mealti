@@ -16,6 +16,7 @@ interface AccountMonthProps {
 }
 const AccountMonth = ({ meal }: AccountMonthProps) => {
   const { currentUser } = useCurrentUser();
+
   const userInfo = useUserInfo(currentUser.id) as UserInfo;
   const offset = 1000 * 60 * 60 * 9; //한국 시간으로 바꾸기 위해
 
@@ -54,6 +55,11 @@ const AccountMonth = ({ meal }: AccountMonthProps) => {
       )
     );
   }, [selectedDay, meal]);
+
+  if (currentUser.id === "") {
+    //로그인되어있지않을때
+    return <></>;
+  }
   return (
     <AccountMonthWrapper>
       <CalendarWrapper>

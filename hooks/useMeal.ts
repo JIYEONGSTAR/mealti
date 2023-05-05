@@ -19,10 +19,7 @@ import {
 } from "firebase/firestore";
 
 import { queryKeys } from "react-query/constants";
-
 const getMeals = async (uid: string, startDate?: string, endDate?: string) => {
-  console.log("uid", uid);
-  //uid불러올 방법 생각하기 (seccion-storage? cookie? localStroge?)
   const mealRef = collection(firestore, "posts");
 
   const q =
