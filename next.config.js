@@ -9,14 +9,7 @@ const nextConfig = {
       "firebasestorage.googleapis.com",
       "lh3.googleusercontent.com",
     ],
-  },
-  async rewrites() {
-    return [
-      {
-        source: "/api/:path*",
-        destination: "http://localhost:8088/:path*",
-      },
-    ];
+    unoptimized: true,
   },
 };
 
