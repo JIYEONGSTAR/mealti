@@ -103,7 +103,6 @@ const AccountMonthWrapper = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
-  overflow: auto;
   padding-bottom: 5.5vh;
 `;
 
@@ -117,7 +116,7 @@ const CalendarWrapper = styled.div`
   border-radius: 15px;
   width: 90%;
   height: 95%;
-  /* overflow-x: auto; */
+
   margin: 10px;
 `;
 
@@ -125,10 +124,10 @@ const CalendarBorderWrapper = styled.div`
   margin: 10px;
   width: 95%;
   height: 95%;
-  /* overflow-x: auto; */
   background-color: ${({ theme }) => theme.color.backgroundColor};
   border-width: 1;
   border-radius: 15px;
+  overflow: auto;
 `;
 const LogWrapper = styled.div`
   flex: 1;
@@ -137,7 +136,7 @@ const LogWrapper = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
-  overflow: auto;
+  /* overflow: auto; */
 `;
 
 const FlatList = styled.div`

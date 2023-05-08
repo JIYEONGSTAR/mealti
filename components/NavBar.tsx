@@ -16,10 +16,12 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import OutdoorGrillIcon from "@mui/icons-material/OutdoorGrill";
 import PersonIcon from "@mui/icons-material/Person";
+import { QueryClient } from "react-query";
 const NavBar = () => {
   const theme = useContext(ThemeContext);
   const { setCurrentUser } = useCurrentUser();
   const router = useRouter();
+  const queryClient = new QueryClient();
   return (
     <Nav>
       <NavTopWrapper>
@@ -32,7 +34,6 @@ const NavBar = () => {
             fontSize="0.7rem"
             text="로그아웃"
             onClick={() => {
-              console.log("logout");
               fireAuth.signOut();
               setCurrentUser({
                 email: "",
@@ -45,6 +46,7 @@ const NavBar = () => {
                 picture: "",
                 verified_email: false,
               });
+              queryClient.clear();
             }}
           />
         </ButtonWrapper>
@@ -146,6 +148,9 @@ const NavWrapper = styled.div`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+  }
+  @media screen and (max-width: 480px) {
+    width: 100%;
   }
 `;
 const LinkContainer = styled.li<{ active: string }>`

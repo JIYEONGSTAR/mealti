@@ -21,5 +21,5 @@ const ToggleWrapper = styled.button`
   width: 46px;
   height: 30px;
   border-radius: 30px;
-  box-shadow: 0px 0.5px 2px grey;
+  /* box-shadow: 0px 0.5px 2px grey; */
 `;

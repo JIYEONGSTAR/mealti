@@ -37,4 +37,8 @@ const Wrapper = styled.div`
   border-radius: 20px;
   border: 2px solid ${(props) => props.theme.color.mainColor};
   padding: 10px;
+  text-align: center;
+  @media screen and (max-width: 480px) {
+    border: none;
+  }
 `;
