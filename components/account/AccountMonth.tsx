@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { calendarDate } from "components/calendar/calendarDate";
 import { addMonths, subMonths } from "date-fns";
 import { RenderHeader, RenderDays, RenderMonth } from "components/calendar";
-
 import styled, { ThemeContext } from "styled-components";
 import BoldText from "components/ui/BoldText";
 import SquareLog from "components/SquareLog";
