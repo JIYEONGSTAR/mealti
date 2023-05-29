@@ -7,6 +7,8 @@ import ButtonForm from "components/ui/ButtonForm";
 import styled from "styled-components";
 import Image from "next/image";
 import { useDeleteMeal } from "hooks/useMeal";
+import { firestorage } from "firebase/clientApp";
+import { deleteObject, ref } from "firebase/storage";
 
 interface AccountDetailModalProps {
   isModalVisible: boolean;
@@ -23,6 +25,7 @@ const AccountDetailModal = ({
   const deleteMeal = useDeleteMeal();
 
   const handleDelete = () => {
+    handleFileDelete(data.image);
     deleteMeal(data.id);
     alert("삭제되었습니다.");
     handleModalClose();
@@ -32,6 +35,17 @@ const AccountDetailModal = ({
     setKind("read");
   };
 
+  const handleFileDelete = (imageUrl?: string) => {
+    if (!imageUrl) return;
+    const fileRef = ref(firestorage, imageUrl);
+    deleteObject(fileRef)
+      .then(() => {
+        console.log("file deleted");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
     <>
       <Modal show={isModalVisible} onClose={handleClose}>
